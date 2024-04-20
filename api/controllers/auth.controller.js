@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/ErrorHandler.js";
+import sendToken from "../utils/JwtToken.js";
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -32,6 +33,22 @@ export const signup = async (req, res, next) => {
       success: true,
       message: "Signin Successfull!",
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const signin = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const validUser = await User.findOne({ email });
+    if (!validUser) return next(errorHandler(404, "User not found!"));
+    if (validUser) {
+      var getPassword = await User.findOne({ email }).select("+password");
+    }
+    const validPassword = await getPassword.comparePassword(password);
+    if (!validPassword) return next(errorHandler(401, "Wrong credentials!"));
+    sendToken(validUser, 200, res);
   } catch (error) {
     next(error);
   }

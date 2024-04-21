@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { store } from "../redux/store";
+import { loadUser } from "../redux/actions/userAction";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -23,18 +25,20 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const { data } = await axios.post("/api/auth/signin", formData);
-      setLoading(false);
-      if (data.success === true) {
+    await axios
+      .post("/api/auth/signin", formData, { withCredentials: true })
+      .then((res) => {
+        setLoading(false);
+        store.dispatch(loadUser());
+        toast.success("Login Success!");
         navigate("/");
-      }
-      toast.success(data.message);
-    } catch (error) {
-      setLoading(false);
-      toast.error(error.response.data.message);
-    }
+      })
+      .catch((error) => {
+        setLoading(false);
+        toast.error(error.response.data.message);
+      });
   };
+
   return (
     <div className="min-h-screen mt-20">
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">

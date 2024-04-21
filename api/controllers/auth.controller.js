@@ -41,15 +41,25 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    const validUser = await User.findOne({ email });
+    const validUser = await User.findOne({ email }).select("+password");
     if (!validUser) return next(errorHandler(404, "User not found!"));
-    if (validUser) {
-      var getPassword = await User.findOne({ email }).select("+password");
-    }
-    const validPassword = await getPassword.comparePassword(password);
+    const validPassword = await validUser.comparePassword(password);
     if (!validPassword) return next(errorHandler(401, "Wrong credentials!"));
     sendToken(validUser, 200, res);
   } catch (error) {
     next(error);
+  }
+};
+
+export const getuser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return next(errorHandler(404, "User doesn't exists"));
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    next(error.message);
   }
 };

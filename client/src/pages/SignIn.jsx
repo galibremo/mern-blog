@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { store } from "../redux/store";
 import { loadUser } from "../redux/actions/userAction";
+import OAuth from "../components/OAuth";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -91,6 +92,7 @@ export default function SignIn() {
                 "Sign In"
               )}
             </Button>
+            <OAuth />
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't Have an account?</span>

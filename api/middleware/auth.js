@@ -6,7 +6,7 @@ export const isAuthenticated = async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
-    return errorHandler(401, "Please login to continue");
+    return next(errorHandler(401, "Unauthorized"));
   }
 
   try {

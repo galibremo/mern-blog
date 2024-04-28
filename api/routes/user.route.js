@@ -1,10 +1,15 @@
 import express from "express";
-import { test, updateUser } from "../controllers/user.controller.js";
+import {
+  deleteUser,
+  test,
+  updateUser,
+} from "../controllers/user.controller.js";
 import { isAuthenticated } from "../middleware/auth.js";
 
 const router = express.Router();
 
 router.get("/test", test);
-router.put("/update-user-info/:id", isAuthenticated,updateUser);
+router.put("/update-user-info/:id", isAuthenticated, updateUser);
+router.delete("/delete-user/:id", isAuthenticated, deleteUser);
 
 export default router;

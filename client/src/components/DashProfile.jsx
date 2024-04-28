@@ -13,15 +13,16 @@ import { app } from "../firebase";
 import { toast } from "react-toastify";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { updateUserInfo } from "../redux/actions/userAction";
 
 export default function DashProfile() {
   const filePickerRef = useRef();
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
-  const [imageFileUploadError, setImageFileUploadError] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
   const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -47,7 +48,6 @@ export default function DashProfile() {
     //   }
     // }
     setImageFileUploading(true);
-    setImageFileUploadError(null);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + imageFile.name;
     const storageRef = ref(storage, fileName);
@@ -61,19 +61,15 @@ export default function DashProfile() {
         setImageFileUploadProgress(progress.toFixed(0));
       },
       (error) => {
-        setImageFileUploadError(
-          "Could not upload image (File must be less than 2MB)"
-        );
+        toast.error("Could not upload image (File must be less than 2MB)");
         setImageFileUploadProgress(null);
         setImageFile(null);
         setImageFileUrl(null);
         setImageFileUploading(false);
-        if (imageFileUploadError) {
-          toast.error(imageFileUploadError);
-        }
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageFileUploadProgress(null);
           setImageFileUrl(downloadURL);
           setFormData({ ...formData, profilePicture: downloadURL });
           setImageFileUploading(false);
@@ -81,12 +77,22 @@ export default function DashProfile() {
       }
     );
   };
-
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
-  const handleSubmit = (e) => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (imageFileUploading) {
+      toast.info("Please wait for image to upload!");
+      return;
+    }
+    if (Object.keys(formData).length === 0) {
+      toast.info("No changes made");
+      return;
+    }
+    dispatch(updateUserInfo(formData, currentUser._id));
+  };
   const handleDeleteUser = (e) => {};
   const handleSignout = async () => {};
 

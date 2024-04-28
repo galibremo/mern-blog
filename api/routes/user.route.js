@@ -5,6 +5,6 @@ import { isAuthenticated } from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/test", test);
-router.put("/update/:id", isAuthenticated,updateUser);
+router.put("/update-user-info/:id", isAuthenticated,updateUser);
 
 export default router;

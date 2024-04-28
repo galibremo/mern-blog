@@ -3,7 +3,11 @@ import {
   LoadUserRequest,
   LoadUserSuccess,
   LoadUserFail,
+  updateUserInfoRequest,
+  updateUserInfoSuccess,
+  updateUserInfoFail,
 } from "../reducers/userSlice";
+import { toast } from "react-toastify";
 
 export const loadUser = () => async (dispatch) => {
   try {
@@ -14,5 +18,24 @@ export const loadUser = () => async (dispatch) => {
     dispatch(LoadUserSuccess(data.user));
   } catch (error) {
     dispatch(LoadUserFail(error.response.data.message));
+  }
+};
+
+export const updateUserInfo = (formData, id) => async (dispatch) => {
+  try {
+    dispatch(updateUserInfoRequest());
+    const { data } = await axios.put(
+      `/api/user/update-user-info/${id}`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(data);
+    dispatch(updateUserInfoSuccess(data));
+    toast.success("User information updated successfully!");
+  } catch (error) {
+    dispatch(updateUserInfoFail(error.response.data.message));
+    toast.error(error.response.data.message);
   }
 };

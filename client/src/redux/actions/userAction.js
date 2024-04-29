@@ -6,6 +6,9 @@ import {
   updateUserInfoRequest,
   updateUserInfoSuccess,
   updateUserInfoFail,
+  deleteUserRequest,
+  deleteUserSuccess,
+  deleteUserFail,
 } from "../reducers/userSlice";
 import { toast } from "react-toastify";
 
@@ -36,6 +39,19 @@ export const updateUserInfo = (formData, id) => async (dispatch) => {
     toast.success("User information updated successfully!");
   } catch (error) {
     dispatch(updateUserInfoFail(error.response.data.message));
+    toast.error(error.response.data.message);
+  }
+};
+export const deleteUser = (id) => async (dispatch) => {
+  try {
+    dispatch(deleteUserRequest());
+    const { data } = await axios.delete(`/api/user/delete-user/${id}`, {
+      withCredentials: true,
+    });
+    dispatch(deleteUserSuccess(data));
+    toast.success(data);
+  } catch (error) {
+    dispatch(deleteUserFail(error.response.data.message));
     toast.error(error.response.data.message);
   }
 };

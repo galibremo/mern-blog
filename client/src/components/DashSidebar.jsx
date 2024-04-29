@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { signout } from "../redux/actions/userAction";
 
 export default function DashSidebar() {
   const location = useLocation();
@@ -24,7 +25,9 @@ export default function DashSidebar() {
       setTab(tabFromUrl);
     }
   }, [location.search]);
-  const handleSignout = async () => {};
+  const handleSignout = async () => {
+    dispatch(signout());
+  };
   return (
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
@@ -39,7 +42,7 @@ export default function DashSidebar() {
             >
               Profile
             </Sidebar.Item>
-          </Link> 
+          </Link>
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"

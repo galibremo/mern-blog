@@ -5,6 +5,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { toggleTheme } from "../redux/reducers/themeSlice";
+import { signout } from "../redux/actions/userAction";
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -15,7 +16,9 @@ export default function Header() {
   const [theme, setTheme] = useState("");
   const { currentUser, isAuthenticated } = useSelector((state) => state.user);
   const handleSubmit = () => {};
-  const handleSignout = () => {};
+  const handleSignout = () => {
+    dispatch(signout());
+  };
 
   return (
     <Navbar className="border-b-2">

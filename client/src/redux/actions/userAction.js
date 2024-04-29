@@ -9,6 +9,9 @@ import {
   deleteUserRequest,
   deleteUserSuccess,
   deleteUserFail,
+  signOutUserRequest,
+  signOutUserSuccess,
+  signOutUserFail,
 } from "../reducers/userSlice";
 import { toast } from "react-toastify";
 
@@ -53,5 +56,16 @@ export const deleteUser = (id) => async (dispatch) => {
   } catch (error) {
     dispatch(deleteUserFail(error.response.data.message));
     toast.error(error.response.data.message);
+  }
+};
+export const signout = () => async (dispatch) => {
+  try {
+    dispatch(signOutUserRequest());
+    const { data } = await axios.post(`/api/user/signout`);
+    dispatch(signOutUserSuccess(data));
+    toast.success(data);
+  } catch (error) {
+    dispatch(signOutUserFail(error.response.data.message));
+    console.log(error.response.data.message);
   }
 };

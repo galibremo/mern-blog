@@ -13,7 +13,7 @@ import { app } from "../firebase";
 import { toast } from "react-toastify";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { updateUserInfo } from "../redux/actions/userAction";
+import { signout, updateUserInfo } from "../redux/actions/userAction";
 import { deleteUser } from "../redux/actions/userAction";
 
 export default function DashProfile() {
@@ -99,7 +99,9 @@ export default function DashProfile() {
     setShowModal(false);
     dispatch(deleteUser(currentUser._id));
   };
-  const handleSignout = async () => {};
+  const handleSignout = async () => {
+    dispatch(signout());
+  };
 
   const { currentUser } = useSelector((state) => state.user);
   return (
@@ -176,7 +178,9 @@ export default function DashProfile() {
         <span className="cursor-pointer" onClick={() => setShowModal(true)}>
           Delete Account
         </span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span onClick={handleSignout} className="cursor-pointer">
+          Sign Out
+        </span>
       </div>
       <Modal
         show={showModal}

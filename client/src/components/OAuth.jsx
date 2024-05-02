@@ -28,7 +28,6 @@ export default function OAuth() {
         store.dispatch(loadUser());
         navigate("/");
       }
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

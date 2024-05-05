@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/test", test);
 router.put("/update-user-info/:id", isAuthenticated, updateUser);
-router.delete("/delete-user/:id", isAuthenticated, deleteUser);
+router.delete("/delete/:id", isAuthenticated, deleteUser);
 router.post("/signout", signOut);
 router.get("/getusers", isAuthenticated, getUsers);
 

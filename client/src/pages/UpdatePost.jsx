@@ -28,8 +28,11 @@ export default function UpdatePost() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/api/post/getposts?postId=${postId}`);
-        setFormData(data.posts[0]);
+        const res = await axios.get(`/api/post/getposts?postId=${postId}`);
+        if (res.status === 200) {
+          const data = res.data;
+          setFormData(data.posts[0]);
+        }
       } catch (error) {
         console.log(error);
         toast.error(error.message);
@@ -143,7 +146,7 @@ export default function UpdatePost() {
             )}
           </Button>
         </div>
-        {formData.image && (
+        {formData && (
           <img
             src={formData?.image}
             alt="upload"

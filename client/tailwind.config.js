@@ -5,7 +5,13 @@ import tailwindScrollbar from "tailwind-scrollbar";
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", flowbite.content()],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        Dosis: ["Dosis", "sans-serif"],
+        Roboto: ["Roboto", "sans-serif"],
+        Poppins: ["Poppins", "sans-serif"],
+      },
+    },
   },
   plugins: [flowbite.plugin(), tailwindScrollbar],
 };

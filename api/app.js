@@ -5,6 +5,7 @@ import errorHandler from "./middleware/error.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import postRouter from "./routes/post.route.js";
+import commentRouter from "./routes/comment.route.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/post", postRouter);
+app.use("/api/comment", commentRouter);
 app.use(errorHandler);
 
 export default app;

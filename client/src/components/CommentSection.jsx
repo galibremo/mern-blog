@@ -31,6 +31,28 @@ export default function CommentSection({ postId }) {
     getComments();
   }, [postId]);
 
+  const handleLike = async (commentId) => {
+    try {
+      const res = await axios.put(`/api/comment/likecomment/${commentId}`);
+      if (res.status === 200) {
+        const data = res.data;
+        setComments(
+          comments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.likes.length,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(comments);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -107,7 +129,7 @@ export default function CommentSection({ postId }) {
             </div>
           </div>
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
+            <Comment key={comment._id} comment={comment} onLike={handleLike} />
           ))}
         </>
       )}

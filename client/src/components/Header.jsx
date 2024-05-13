@@ -15,7 +15,23 @@ export default function Header() {
   const [searchTerm, setSearchTerm] = useState("");
   const [theme, setTheme] = useState("");
   const { currentUser, isAuthenticated } = useSelector((state) => state.user);
-  const handleSubmit = () => {};
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
   const handleSignout = () => {
     dispatch(signout());
   };
@@ -36,6 +52,7 @@ export default function Header() {
           type="text"
           placeholder="Search..."
           rightIcon={AiOutlineSearch}
+          style={{ borderRadius: "10px" }}
           className="hidden lg:inline"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

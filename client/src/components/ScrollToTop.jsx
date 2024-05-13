@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const location = useLocation(); // works if any location changes 
+  //const { pathname } = useLocation(); // works only if path changes 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [location]);
   return null;
 };
 

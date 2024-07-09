@@ -36,6 +36,9 @@ export default function App() {
         </Route>
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/update-post/:postId" element={<UpdatePost />} />
+        <Route element={<AdminPrivateRoute />}>
+          <Route path="/dashboard?tab=users" element={<Dashboard />} />
+        </Route>
         <Route path="/projects" element={<Projects />} />
       </Routes>
       <Footer />

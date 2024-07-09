@@ -126,7 +126,7 @@ export default function DashUsers() {
         </>
       ) : (
         <div className="flex justify-center items-center h-[90vh]">
-          <p className="text-center">You have no users!</p>
+          <p className="text-center">You are not an Admin!</p>
         </div>
       )}
       <Modal

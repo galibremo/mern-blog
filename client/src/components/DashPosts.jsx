@@ -13,7 +13,21 @@ export default function DashPosts() {
   const [showModal, setShowModal] = useState(false);
   const [postIdToDelete, setPostIdToDelete] = useState("");
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchAllPosts = async () => {
+      try {
+        const res = await axios.get(`/api/post/getposts`);
+        if (res.status === 200) {
+          const data = res.data;
+          setUserPosts(data.posts);
+          if (data.posts.length < 9) {
+            setShowMore(false);
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    const fetchUserPosts = async () => {
       try {
         const res = await axios.get(
           `/api/post/getposts?userId=${currentUser._id}`
@@ -30,7 +44,10 @@ export default function DashPosts() {
       }
     };
     if (currentUser.isAdmin) {
-      fetchPosts();
+      fetchAllPosts();
+    }
+    if (!currentUser.isAdmin) {
+      fetchUserPosts();
     }
   }, [currentUser._id]);
 
@@ -51,7 +68,7 @@ export default function DashPosts() {
       console.log(error.message);
     }
   };
-
+  console.log(userPosts);
   const handleDeletePost = async () => {
     setShowModal(false);
     try {
@@ -71,7 +88,7 @@ export default function DashPosts() {
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 w-full">
-      {currentUser.isAdmin && userPosts.length > 0 ? (
+      {currentUser && userPosts.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
             <Table.Head>

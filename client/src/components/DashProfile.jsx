@@ -40,16 +40,6 @@ export default function DashProfile() {
     }
   }, [imageFile]);
   const uploadImage = async () => {
-    // service firebase.storage {
-    //   match /b/{bucket}/o {
-    //     match /{allPaths=**} {
-    //       allow read;
-    //       allow write: if
-    //       request.resource.size < 2 * 1024 * 1024 &&
-    //       request.resource.contentType.matches('image/.*')
-    //     }
-    //   }
-    // }
     setImageFileUploading(true);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + imageFile.name;
@@ -178,7 +168,7 @@ export default function DashProfile() {
         >
           {loading ? "Loading..." : "Update"}
         </Button>
-        {currentUser.isAdmin && (
+        {currentUser && (
           <Link to={"/create-post"}>
             <Button
               type="button"
